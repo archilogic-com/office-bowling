@@ -1,26 +1,36 @@
 const scene = document.querySelector('a-scene')
 const scoreboard = document.getElementById('scoreboard')
 const SCORE_TEXT_LEN = 3
-
+const ball = document.getElementById('ball')
 let score = 0
 
 scene.addEventListener('renderstart', function () {
+  const cam = document.querySelector('[camera]')
 
-  io3d.scene.getAframeElements('650b989a-ca47-41ec-bec8-53896e8b354e')
+  window.addEventListener('gripup', () => {
+    ball.removeAttribute('dynamic-body')
+    let pos = JSON.parse(JSON.stringify(cam.getAttribute('position')))
+    pos.y = 0.5
+    ball.setAttribute('position', pos)
+    ball.setAttribute('dynamic-body', 'mass: 1000; shape: sphere; sphereRadius: 0.2')
+  })
+
+  io3d.scene.getAframeElements('8e5864db-6a66-4e50-ac2b-c84da16e2faf')
   .then(function (elements) {
     elements
     .filter(function(elem) { return !elem.hasAttribute('camera') })
     .forEach(function (elem) {
+      elem.setAttribute('position', '2.983 0 -17.3')
+      elem.setAttribute('rotation', '0 90 0')
       prepareFurnitureForFun(elem)
-      elem.setAttribute('position', '5.954 0 0')
-      scene.appendChild(elem)
+      document.getElementById('holder').appendChild(elem)
     })
   })
 })
 
 function prepareFurnitureForFun(elem) {
   if (elem.hasAttribute('io3d-furniture')) {
-    elem.setAttribute('dynamic-body', 'mass: 10; shape: box')
+    elem.setAttribute('dynamic-body', 'mass: 2; shape: box')
     elem.addEventListener('collide', onCollide)
   }
 

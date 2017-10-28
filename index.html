@@ -11,24 +11,25 @@
   <script src="https://unpkg.com/aframe-text-geometry-component@^0.5.0/dist/aframe-text-geometry-component.min.js"></script>
 </head>
 <body>
-  <a-scene physics="debug: true">
-    <a-sphere id="ball" class="object" grabbable scale="0.25 0.25 0.25" color="blue" position="0 3 -2" dynamic-body="shape: sphere; mass: 1000; sphereRadius: 0.25"></a-sphere>
+  <a-scene physics>
+    <a-sphere id="ball" class="object" grabbable scale="0.25 0.25 0.25" color="blue" position="0 3 -2" dynamic-body="shape: sphere; mass: 100; sphereRadius: 0.25"></a-sphere>
 
     <!-- environment -->
-    <a-entity position="0 -0.01 0" environment="preset: goaland"></a-entity>
+    <a-entity position="0 -1.5 0" environment="preset: goaland"></a-entity>
 
     <!-- controls -->
-    <a-entity progressive-controls="objects: .object"></a-entity>
-
+    <a-entity position="0 0 0" progressive-controls="objects: .object"></a-entity>
+    <a-entity id="holder" position="0 0 2.043">
+      <a-entity visible="false" position="0 -0.5 0" scale="50 1 50" id="ground" geometry="box" static-body="sphereRadius:1"></a-entity>
+      <a-entity visible="false" position="0 0 3.28" scale="17.44 4.722 2.908" geometry="" id="wall" static-body="sphereRadius:1"></a-entity>
+      <a-entity visible="false" position="0 0 -20.002" scale="17.44 4.722 2.908" geometry="" id="wall-2" static-body="sphereRadius:1"></a-entity>
+      <a-entity visible="false" static-body="sphereRadius:1" position="-5.668 0 -7.895" scale="2.9 4.722 25.908" geometry="box" id="wall-3" rotation="0 0 0"></a-entity>
+      <a-entity visible="false" static-body="sphereRadius:1" position="5.879 0 -7.895" scale="2.9 4.722 25.908" geometry="box" id="wall-4" rotation="0 0 0"></a-entity>
+    </a-entity>
     <!-- colliders -->
-    <a-entity visible="false" position="0 -0.5 0" scale="50 1 50" id="ground" geometry="box" static-body="sphereRadius:1"></a-entity>
-    <a-entity visible="false" position="0 0 7.291" scale="17.44 4.722 2.908" geometry="box" id="wall" static-body></a-entity>
-    <a-entity visible="false" position="0 0 -7.895" scale="17.44 4.722 2.908" geometry="box" id="wall-2" static-body></a-entity>
-    <a-entity visible="false" static-body position="0 0 -7.895" scale="17.44 4.722 2.908" geometry="box" id="wall-2"></a-entity>
-    <a-entity visible="false" static-body position="0 0 -7.895" scale="17.44 4.722 2.908" geometry="box" id="wall-2"></a-entity>
 
 <!-- score board -->
-    <a-entity id="scoreboard" position="0 1.8 -5.271" text-geometry="value: 000" color="skyblue"></a-entity>
+    <a-entity id="scoreboard" position="0 1.8 -5.271" text-geometry="value: 000" material="emissive:white" color="skyblue"></a-entity>
   </a-scene>
   <script src="app.js"></script>
 </body>
