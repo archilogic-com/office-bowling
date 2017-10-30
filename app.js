@@ -9,9 +9,8 @@ scene.addEventListener('renderstart', function () {
 
   window.addEventListener('gripup', () => {
     ball.removeAttribute('dynamic-body')
-    let pos = JSON.parse(JSON.stringify(cam.getAttribute('position')))
-    pos.y = 0.5
-    ball.setAttribute('position', pos)
+    const pos = cam.getAttribute('position')
+    ball.setAttribute('position', `${pos.x} 0.5 ${pos.z}`)
     ball.setAttribute('dynamic-body', 'mass: 1000; shape: sphere; sphereRadius: 0.2')
   })
 
