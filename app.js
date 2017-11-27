@@ -7,7 +7,7 @@ let score = 0
 scene.addEventListener('renderstart', function () {
   const cam = document.querySelector('[camera]')
 
-  window.addEventListener('gripup', () => {
+  window.addEventListener('touchpadup', () => {
     ball.removeAttribute('dynamic-body')
     const pos = cam.getAttribute('position')
     ball.setAttribute('position', `${pos.x} 0.5 ${pos.z}`)
