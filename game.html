@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+  <title>Office Bowling</title>
+  <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
+  <script src="https://dist.3d.io/3dio-js/1.x.x/3dio.min.js"></script>
+  <script src="aframe-physics-system.min.js"></script>
+  <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+  <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.11.4/dist/aframe-extras.min.js"></script>
+  <script src="https://unpkg.com/super-hands@2.0.1/dist/super-hands.min.js"></script>
+  <script src="https://unpkg.com/aframe-text-geometry-component@^0.5.0/dist/aframe-text-geometry-component.min.js"></script>
+  <script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script>
+</head>
+<body>
+  <a-scene physics>
+    <a-sphere id="ball" class="object" grabbable scale="0.25 0.25 0.25" color="blue" position="0 3 -2" dynamic-body="shape: sphere; mass: 100; sphereRadius: 0.25"></a-sphere>
+
+    <!-- environment -->
+    <a-entity position="0 -1.5 0" environment="preset: goaland"></a-entity>
+
+    <!-- portal -->
+    <a-entity link="href:index.html; title:Exit game; image:img/lobby.png; peekMode:true" position="0 1.20 3.38" rotation="0 180 0" scale="0.5 1 1" ></a-entity>
+
+    <!-- controls / camera -->
+    <a-entity progressive-controls position="0 0 0">
+      <a-camera position="0 0 0" super-hands> <!--</a-camera> fence="depth: 5; width: 6.5; z0: -0.5; x0: -0.51" -->
+        <a-entity raycaster></a-entity>
+      </a-camera>
+      <a-entity class="right-controller" super-hands teleport-controls></a-entity>
+      <a-entity class="left-controller" super-hands teleport-controls></a-entity>
+    </a-entity>
+
+    <!-- colliders -->
+    <a-entity id="holder" position="0 0 2.043">
+      <a-entity visible="false" position="0 -0.5 0" scale="50 1 50" id="ground" geometry="box" static-body="sphereRadius:1"></a-entity>
+      <a-entity visible="false" position="0 0 3.28" scale="17.44 4.722 2.908" geometry="" id="wall" static-body="sphereRadius:1"></a-entity>
+      <a-entity visible="false" position="0 0 -20.002" scale="17.44 4.722 2.908" geometry="" id="wall-2" static-body="sphereRadius:1"></a-entity>
+      <a-entity visible="false" static-body="sphereRadius:1" position="-5.668 0 -7.895" scale="2.9 4.722 25.908" geometry="box" id="wall-3" rotation="0 0 0"></a-entity>
+      <a-entity visible="false" static-body="sphereRadius:1" position="5.879 0 -7.895" scale="2.9 4.722 25.908" geometry="box" id="wall-4" rotation="0 0 0"></a-entity>
+    </a-entity>
+
+    <!-- score board -->
+    <a-entity id="scoreboard" position="0 1.8 -16.566" text-geometry="value: 00" material="color:#00F"></a-entity>
+    <!--a-entity id="timer" position="-2.524 1.80 -16.566" text-geometry="value:02:00" material="color:#F00"></a-entity-->
+  </a-scene>
+  <script src="app.js"></script>
+</body>
+</html>
