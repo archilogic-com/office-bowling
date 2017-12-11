@@ -1,36 +1,58 @@
 <!doctype html>
 <html>
 <head>
-  <title>Office Bowling</title>
-  <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+  <meta charset="utf-8">
+  <title>Lobby - Office Bowling</title>
+  <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
   <script src="https://dist.3d.io/3dio-js/1.x.x/3dio.min.js"></script>
-  <script src="aframe-physics-system.min.js"></script>
   <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+  <script src="https://unpkg.com/aframe-text-geometry-component@^0.5.0/dist/aframe-text-geometry-component.min.js"></script>
   <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.11.4/dist/aframe-extras.min.js"></script>
   <script src="https://unpkg.com/super-hands@2.0.1/dist/super-hands.min.js"></script>
-  <script src="https://unpkg.com/aframe-text-geometry-component@^0.5.0/dist/aframe-text-geometry-component.min.js"></script>
+  <script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script>
 </head>
 <body>
-  <a-scene physics>
-    <a-sphere id="ball" class="object" grabbable scale="0.25 0.25 0.25" color="blue" position="0 3 -2" dynamic-body="shape: sphere; mass: 100; sphereRadius: 0.25"></a-sphere>
+  <a-scene>
+    <a-entity id="env" environment="preset: forest; skyColor: #ffffff; horizonColor: #b2f2fc" position="0 -1 0"></a-entity>
+    <a-entity id="lobby" rotation="0 90 0" position="-2.44 0 -2.315" io3d-data3d="key:/535e624259ee6b0200000484/processing/2017-10-23_14-15-26_L8HrjF/lighting.gz.data3d.buffer;lightMapIntensity: 0.8;lightMapExposure: 0.5" shadow="cast:false; receive:true" rotation="0 0 0"></a-entity>
 
-    <!-- environment -->
-    <a-entity position="0 -1.5 0" environment="preset: goaland"></a-entity>
+    <!-- portals -->
 
-    <!-- controls -->
-    <a-entity position="0 0 0" progressive-controls="objects: .object"></a-entity>
-    <a-entity id="holder" position="0 0 2.043">
-      <a-entity visible="false" position="0 -0.5 0" scale="50 1 50" id="ground" geometry="box" static-body="sphereRadius:1"></a-entity>
-      <a-entity visible="false" position="0 0 3.28" scale="17.44 4.722 2.908" geometry="" id="wall" static-body="sphereRadius:1"></a-entity>
-      <a-entity visible="false" position="0 0 -20.002" scale="17.44 4.722 2.908" geometry="" id="wall-2" static-body="sphereRadius:1"></a-entity>
-      <a-entity visible="false" static-body="sphereRadius:1" position="-5.668 0 -7.895" scale="2.9 4.722 25.908" geometry="box" id="wall-3" rotation="0 0 0"></a-entity>
-      <a-entity visible="false" static-body="sphereRadius:1" position="5.879 0 -7.895" scale="2.9 4.722 25.908" geometry="box" id="wall-4" rotation="0 0 0"></a-entity>
+    <a-entity link="href:game.html; title:Enter the game; image:img/game.png; peekMode:true" position="0.167 1.088 -3.38" rotation="0 0 0" scale="0.5 1 1" ></a-entity>
+
+    <!-- scoreboard --
+    <a-entity id="billboard" obj-model="mtl:models/billboard_a.mtl;obj:models/billboard_a.obj" position="-1.41 -1.028 16.782">
+      <a-entity id="title" text-geometry="size:0.6;weight:bold;value:Highscores" position="2.128 8.43 -0.431" rotation="0 180 0" material="emissive:#ff0000"></a-entity>
+      <a-entity id="pos1" text-geometry="value:0000" position="0.8 7.63 -0.431" rotation="0 180 0" material="emissive:#ffffff"></a-entity>
+      <a-entity id="pos2" text-geometry="value:0000" position="0.8 6.83 -0.431" rotation="0 180 0" material="emissive:#ffffff"></a-entity>
+      <a-entity id="pos3" text-geometry="value:0000" position="0.8 6.03 -0.431" rotation="0 180 0" material="emissive:#ffffff"></a-entity>
+    </a-entity-->
+
+    <!-- controls / camera -->
+    <a-entity progressive-controls position="0 0 0">
+      <a-camera position="0 0 0" super-hands> <!--</a-camera> fence="depth: 5; width: 6.5; z0: -0.5; x0: -0.51" -->
+        <a-entity raycaster></a-entity>
+      </a-camera>
+      <a-entity class="right-controller" super-hands teleport-controls></a-entity>
+      <a-entity class="left-controller" super-hands teleport-controls></a-entity>
     </a-entity>
-    <!-- colliders -->
 
-<!-- score board -->
-    <a-entity id="scoreboard" position="0 1.8 -5.271" text-geometry="value: 000" material="emissive:white" color="skyblue"></a-entity>
   </a-scene>
-  <script src="app.js"></script>
+
+  <script>
+    /* Randomly places furniture in the lobby */
+    const sceneId = 'd86c92d7-294a-43f2-aaab-1e8346c5a53b'
+    const scene = document.querySelector('#lobby')
+
+    io3d.config({
+      publishableApiKey: '213edd35-0500-4953-bbc1-b4d7535d604f'
+    })
+
+    io3d.utils.services.call('Model.read', { arguments: { resourceId: sceneId } })
+      .then(model => io3d.staging.getFurnishings(model.modelStructure))
+      .then(io3d.staging.replaceFurniture)
+      .then(furniture => io3d.scene.getAframeElementsFromSceneStructure(furniture))
+      .then(elems => elems.forEach(elem => scene.appendChild(elem)))
+  </script>
 </body>
 </html>
