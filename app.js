@@ -65,8 +65,6 @@ function onCollide(evt) {
 
 function tickTock() {
   if (--timeLeft < 0) {
-//    localStorage.setItem('currentScore', score)
-    window.location.href = '/'
+    window.location.href = './'
   }
-//  timer.setAttribute('text-geometry', { value: `${('00' + Math.floor(timeLeft / 60)).slice(-2)}:${('00' + (timeLeft % 60)).slice(-2)}` })
 }
